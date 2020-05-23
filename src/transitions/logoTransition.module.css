@@ -1,0 +1,8 @@
+.enter {
+  transform: rotate(1060deg) scale(0);
+}
+
+.enterActive {
+  transform: rotate(0) scale(1);
+  transition: all 500ms linear;
+}
