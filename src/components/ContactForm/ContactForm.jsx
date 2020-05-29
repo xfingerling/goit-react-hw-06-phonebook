@@ -3,21 +3,44 @@ import PropTypes from "prop-types";
 
 import styles from "./ContactForm.module.css";
 
+import Notification from "../Notification/Notification";
+
+import { isUniqueName } from "../../helpers";
+
 const initialState = { name: "", number: "" };
 
 export default class ContactForm extends Component {
   static propTypes = {
     onAddContact: PropTypes.func,
+    contacts: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string,
+        name: PropTypes.string,
+        number: PropTypes.string,
+      }),
+    ),
   };
 
   state = {
     ...initialState,
+    isAlertShow: false,
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
 
-    this.props.onAddContact({ ...this.state });
+    const { contacts } = this.props;
+
+    if (isUniqueName(contacts, this.state.name)) {
+      this.props.onAddContact({ ...this.state });
+    } else {
+      this.setState((state) => ({ isAlertShow: !state.isAlertShow }));
+
+      setTimeout(() => {
+        this.setState((state) => ({ isAlertShow: !state.isAlertShow }));
+      }, 3000);
+    }
+
     this.setState({ ...initialState });
   };
 
@@ -29,37 +52,41 @@ export default class ContactForm extends Component {
   };
 
   render() {
-    const { name, number } = this.state;
+    const { name, number, isAlertShow } = this.state;
 
     return (
-      <form onSubmit={this.handleSubmit} className={styles.form}>
-        <input
-          className={styles.input}
-          name="name"
-          type="text"
-          value={name}
-          onChange={this.handleChange}
-          placeholder="Name"
-          autoComplete="off"
-        />
-        <input
-          className={styles.input}
-          name="number"
-          type="number"
-          value={number}
-          onChange={this.handleChange}
-          placeholder="Number"
-          autoComplete="off"
-        />
+      <>
+        <form onSubmit={this.handleSubmit} className={styles.form}>
+          <input
+            className={styles.input}
+            name="name"
+            type="text"
+            value={name}
+            onChange={this.handleChange}
+            placeholder="Name"
+            autoComplete="off"
+          />
+          <input
+            className={styles.input}
+            name="number"
+            type="number"
+            value={number}
+            onChange={this.handleChange}
+            placeholder="Number"
+            autoComplete="off"
+          />
 
-        <button
-          className={styles.btn}
-          type="submit"
-          disabled={!name || !number}
-        >
-          Add contact
-        </button>
-      </form>
+          <button
+            className={styles.btn}
+            type="submit"
+            disabled={!name || !number}
+          >
+            Add contact
+          </button>
+        </form>
+
+        <Notification isShow={isAlertShow} text="Contact is already exist" />
+      </>
     );
   }
 }

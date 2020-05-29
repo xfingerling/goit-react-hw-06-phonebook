@@ -1,5 +1,5 @@
-const isUniqueName = (state, contact) => {
-  return !state.some((el) => el.name === contact.name);
+const isUniqueName = (state, contactName) => {
+  return !state.some((el) => el.name === contactName);
 };
 
 const sortContactsAlphabetically = (contacts) => {
@@ -20,4 +20,13 @@ const filterContactsByName = (contacts, filter) => {
   return sortContactsAlphabetically(filtred);
 };
 
-export { isUniqueName, filterContactsByName, sortContactsAlphabetically };
+const formatedNumber = (number) => {
+  return number.replace(/(\d{1,3}(?=(?:\d\d)+(?!\d)))/g, "$1-");
+};
+
+export {
+  isUniqueName,
+  filterContactsByName,
+  sortContactsAlphabetically,
+  formatedNumber,
+};

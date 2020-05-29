@@ -3,8 +3,12 @@ import * as phonebookActions from "../../Redux/phonebookActions";
 
 import ContactForm from "./ContactForm";
 
+const mapStatetoProps = (state) => ({
+  contacts: state.contacts,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   onAddContact: (contact) => dispatch(phonebookActions.addContact(contact)),
 });
 
-export default connect(null, mapDispatchToProps)(ContactForm);
+export default connect(mapStatetoProps, mapDispatchToProps)(ContactForm);

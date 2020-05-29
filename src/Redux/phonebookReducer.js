@@ -1,7 +1,6 @@
-import { combineReducers } from "redux";
-import Type from "./ActionTypes";
+import { createReducer } from "@reduxjs/toolkit";
 
-import { isUniqueName } from "../helpers";
+import * as phonebookActions from "./phonebookActions";
 
 const initialContactsState = [
   // { id: "1", name: "dima", number: "32132" },
@@ -10,37 +9,15 @@ const initialContactsState = [
   // { id: "4", name: "dog", number: "654654" },
 ];
 
-const contactsReducer = (state = initialContactsState, { type, payload }) => {
-  switch (type) {
-    case Type.ADD_CONTACT:
-      if (!isUniqueName(state, payload)) {
-        alert(`${payload.name} is already exist`);
-        return state;
-      }
-      return [...state, payload];
-
-    case Type.DELETE_CONTACT:
-      return state.filter((el) => el.id !== payload.id);
-
-    case Type.ADD_CONTACTS_TO_LS:
-      return [...payload];
-
-    default:
-      return state;
-  }
-};
-
-const filterReducer = (state = "", { type, payload }) => {
-  switch (type) {
-    case Type.FILTER_CONTACTS:
-      return payload;
-
-    default:
-      return state;
-  }
-};
-
-export default combineReducers({
-  contacts: contactsReducer,
-  filter: filterReducer,
+const contactsReducer = createReducer(initialContactsState, {
+  [phonebookActions.addContact]: (state, { payload }) => [...state, payload],
+  [phonebookActions.deleteContact]: (state, { payload }) =>
+    state.filter((contact) => contact.id !== payload.id),
+  [phonebookActions.addContactsToLS]: (state, { payload }) => [...payload],
 });
+
+const filterReducer = createReducer("", {
+  [phonebookActions.filterContacts]: (state, { payload }) => payload,
+});
+
+export { contactsReducer, filterReducer };

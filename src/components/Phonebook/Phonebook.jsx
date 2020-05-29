@@ -8,7 +8,6 @@ import logoTransition from "../../transitions/logoTransition.module.css";
 import ContactForm from "../ContactForm/ContactFormContainer";
 import ContactList from "../ContactList/contactListContainer";
 import Filter from "../Filter/FilterContainer";
-import Notification from "../Notification/Notification";
 
 export default class Phonebook extends Component {
   static propTypes = {
@@ -23,7 +22,6 @@ export default class Phonebook extends Component {
   };
 
   state = {
-    isAlertShow: false,
     isLogoShow: false,
   };
 
@@ -49,7 +47,7 @@ export default class Phonebook extends Component {
   }
 
   render() {
-    const { isAlertShow, isLogoShow } = this.state;
+    const { isLogoShow } = this.state;
     const { contacts } = this.props;
 
     return (
@@ -71,8 +69,6 @@ export default class Phonebook extends Component {
         <Filter isShow={contacts.length >= 2} />
 
         <ContactList />
-
-        <Notification isShow={isAlertShow} text="Contact is already exist" />
       </div>
     );
   }

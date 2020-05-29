@@ -1,28 +1,22 @@
-import uniqid from "uniqid";
-import Type from "./ActionTypes";
+import { createAction } from "@reduxjs/toolkit";
+import { nanoid } from "@reduxjs/toolkit";
+import { formatedNumber } from "../helpers";
 
-export const addContact = (contact) => ({
-  type: Type.ADD_CONTACT,
+export const addContact = createAction("contacts/add", ({ name, number }) => ({
   payload: {
-    name: contact.name,
-    number: contact.number,
-    id: uniqid(),
+    name,
+    number: formatedNumber(number),
+    id: nanoid(),
   },
-});
+}));
 
-export const deleteContact = (id) => ({
-  type: Type.DELETE_CONTACT,
-  payload: {
-    id: id,
-  },
-});
+export const deleteContact = createAction("contacts/delete", (id) => ({
+  payload: { id },
+}));
 
-export const addContactsToLS = (contacts) => ({
-  type: Type.ADD_CONTACTS_TO_LS,
-  payload: contacts,
-});
+export const addContactsToLS = createAction(
+  "contacts/addToLocalStorage",
+  (contacts) => ({ payload: contacts }),
+);
 
-export const filterContacts = (value) => ({
-  type: Type.FILTER_CONTACTS,
-  payload: value,
-});
+export const filterContacts = createAction("contacts/filter");
