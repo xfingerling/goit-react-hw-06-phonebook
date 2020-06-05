@@ -7,11 +7,9 @@ import "./index.css";
 
 import Phonebook from "./components/Phonebook/PhonebookContainer";
 
-const App = () => <Phonebook />;
-
 render(
   <Provider store={store}>
-    <App />
+    <Phonebook />
   </Provider>,
   document.getElementById("root"),
 );
